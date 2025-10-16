@@ -43,7 +43,7 @@ end
 
 --- Fires the signal with any number of parameters. Continues to fire the next connected heads.
 --- @param ...
-function Signal:Fire(...)
+function Signal:Fire<T...>(...: T...)
 	local _head = self.head;
 
 	while _head do
@@ -88,19 +88,31 @@ end
 
 --- Fully disconnects the signal.
 function Connection:Disconnect()
-	self._signal.head = self.head;
+	self.Connected = false;
+
+	local tail = self._signal;
+
+	if tail.head == self then
+		tail.head = self.head;
+	else
+		while tail.head ~= self do
+			tail = tail.head;
+		end
+		tail.head = self.head;
+	end
+
 	self = nil;
 end
 
 --- Permanently disconnects all signals.
 function Signal:DisconnectAll()
-	local _head = self;
-	local _nexthead = _head.head;
+	local head = self;
+	local nexthead = head.head;
 
-	while _nexthead do
-		_head.head = nil;
-		_head = _nexthead;
-		_nexthead = _head.head;
+	while nexthead do
+		head.head = nil;
+		head = nexthead;
+		nexthead = head.head;
 	end
 end
 
@@ -111,11 +123,11 @@ end
 
 --- Temporarily disconnects all signals.
 function Signal:TempDisconnectAll()
-	local _head = self.head;
+	local head = self.head;
 
-	while _head do
-		_head.Connected = false;
-		_head = _head.head;
+	while head do
+		head.Connected = false;
+		head = head.head;
 	end
 end
 
@@ -126,11 +138,11 @@ end
 
 --- Reconnects all temporarily disconnected signals.
 function Signal:ReconnectAll()
-	local _head = self.head;
+	local head = self.head;
 
-	while _head do
-		_head.Connected = true;
-		_head = _head.head;
+	while head do
+		head.Connected = true;
+		head = head.head;
 	end
 end
 
