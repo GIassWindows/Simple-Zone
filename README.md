@@ -1,21 +1,37 @@
-# Yet Another Signal Implementation
-Just another signal implementation with slightly more methods.
+# State Machine Implementation
+Just another state machine implementation.
 Also because I don't like using other people's code.
+Also uses my signal implementation.
 
 ## Documentation
 
-```lua
-local signal = require("..PATH/..TO/..SIGNAL")
+	```lua
+	local CustomStates = {
+		Test = {
+			"Test1"
+		},
+		Test1 = {
+			""
+		}
+	}
 
-local newSignal = signal.new(); -- Instantiate a new signal.
+	local StateMachine = require("../Path/To/StateMachine.luau");
+	local States = StateMachine.Create(CustomStates);
 
--- Connect method which takes a function that contains the same number of parameters as the :Fire method.
-newSignal:Connect(function(...)
-    print(...);
-end)
+	States:Enter("Test"); -- Enters the state "Test".
+	States:Enter("Test1"); -- Does nothing, Test1 is a state that's untransitionable.
 
-newSignal:Fire(...); -- Fire method which passes any number of parameters with any type.
-```
+	States:Exit("Test"); -- Exits the state "Test".
 
-You can disconnect connections using the traditional :Disconnect() method.
-You can fire a connection once using the traditional :Once() method.
+	-- Callback parameter is the state you entered to.
+	States.OnStateEntered:Connect(function(StateEntered: string)
+		print(StateEntered); -- output: "Test";
+	end)
+
+	-- Callback parameter is the state you exited from.
+	States.OnStateExited:Connect(function(OnStateExited: string)
+		print(OnStateExited); -- output: "Test";
+
+		States:Enter("Test1"); -- Enters the state "Test1" because it is no longer in state Test.
+	end)
+	```
