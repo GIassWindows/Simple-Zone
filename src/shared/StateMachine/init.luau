@@ -143,7 +143,7 @@ end
 --- Checks if a State can be transitioned to.
 --- @param state: string
 --- @return boolean
-function States:CanTransitionToState(state: string, Transitions: { string: { string } }): boolean
+function States:CanTransitionToState(state: string, Transitions: { [string]: { string } }): boolean
 	return self:CheckStates(Transitions[state]);
 end
 
@@ -153,7 +153,7 @@ StateMachine.__index = StateMachine;
 
 --- Creates a new State Machine.
 --- @return StateMachine
-function StateMachine.Create(CustomTransitionTable: { string: { string } } | nil ): StateMachine
+function StateMachine.Create(CustomTransitionTable: { [string]: { string } } | nil ): StateMachine
 	local self = setmetatable({
 		Transitions = Transitions :: { [string]: { string } },
 		OnStateEntered = Signal.new() :: OnStateEntered,
@@ -162,7 +162,7 @@ function StateMachine.Create(CustomTransitionTable: { string: { string } } | nil
 	}, StateMachine);
 	
 	if CustomTransitionTable then
-		self.Transitions = CustomTransitionTable :: {string: { string }};
+		self.Transitions = CustomTransitionTable :: { [string]: { string } };
 	end
 
 	return self;
