@@ -62,10 +62,12 @@ type Signal = {
 
 type OnStateEntered = {
 	Connect                 : <T...>(self: Signal, callback: (StateEntered: string) -> ()) -> (),
+	Once                    : <T...>(self: Signal, callback: (StateEntered: string) -> ()) -> (),
 }
 
 type OnStateExited = {
 	Connect                 : <T...>(self: Signal, callback: (StateExited: string) -> ()) -> (),
+	Once                    : <T...>(self: Signal, callback: (StateExited: string) -> ()) -> (),
 }
 
 type States = {    
