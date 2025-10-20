@@ -4,27 +4,23 @@
 
 	Just with more basic functions.
 
-	blah blah credit: glasswindows
-
-	but everyone does signals like this so who am i really crediting?
-
 ]]--
 
 --- Types ---
 type Connection = {
-	Connected: boolean, 
-	Disconnect: (self: Connection) -> (),
-	TempDisconnect: (self: Connection) -> (),
-	Reconnect: (self: Connection) -> ()
+	Connected               : boolean, 
+	Disconnect              : (self: Connection) -> (),
+	TempDisconnect          : (self: Connection) -> (),
+	Reconnect               : (self: Connection) -> ()
 }
 
 type Signal = {
-	Fire: <T...>(self: Signal, T...) -> (),
-	Connect: <T...>(self: Signal, fn: (T...) -> ()) -> (),
-	Once: <T...>(self: Signal, fn: (T...) -> ()) -> (),
-	DisconnectAll: (self: Signal) -> (),
-	TempDisconnectAll: (self: Signal) -> (),
-	ReconnectAll: (self: Signal) -> ()
+	Fire                    : <T...>(self: Signal, T...) -> (),
+	Connect                 : <T...>(self: Signal, fn: (T...) -> ()) -> (),
+	Once                    : <T...>(self: Signal, fn: (T...) -> ()) -> (),
+	DisconnectAll           : (self: Signal) -> (),
+	TempDisconnectAll       : (self: Signal) -> (),
+	ReconnectAll            : (self: Signal) -> ()
 }
 
 --- Main ---
