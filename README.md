@@ -1,36 +1,40 @@
-# State Machine Implementation
-Just another state machine implementation.
+# Simple Zone
+Basically ZonePlus, but
 Also because I don't like using other people's code.
-Also uses my signal implementation.
+
+uses signal
+ignore previous commits if any im just too lazy to init a new git repo
 
 ## Documentation
 
+Create a zone with Size and Position.
+
 ```lua
-local CustomStates = {
-    Test = {
-        "Test1"
-    },
-    Test1 = {
-        ""
-    }
-}
+local ZoneSize = Vector3.new(10, 10, 10);
+local ZonePosition = CFrame.new(0, 5, 0);
 
-local StateMachine = require("../Path/To/StateMachine.luau");
-local States = StateMachine.Create(CustomStates);
+local Zone = SimpleZone.new(ZoneSize, ZonePosition);
 
-States:Enter("Test"); -- Enters the state "Test".
-States:Enter("Test1"); -- Does nothing, Test1 is a state that's untransitionable.
-
-States:Exit("Test"); -- Exits the state "Test".
-
--- Callback parameter is the state you entered to.
-States.OnStateEntered:Connect(function(StateEntered: string)
-    print(StateEntered); -- output: "Test";
+Zone.Entered:Connect(function(CharacterEntered: Model)
+    print(CharacterEntered.Name .. " has entered the zone.")
 end)
 
--- Callback parameter is the state you exited from.
-States.OnStateExited:Connect(function(OnStateExited: string)
-    print(OnStateExited); -- output: "Test";
-
-    States:Enter("Test1"); -- Enters the state "Test1" because it is no longer in state Test.
+Zone.Exited:Connect(function(CharacterExited: Model)
+    print(CharacterExited.Name .. " has exited the zone.")
 end)
+```
+
+Alternatively, create a zone with size and position extracted from an instance.
+
+```lua
+local Part = workspace.Part;
+local Zone = SimpleZone.fromInstance(Part);
+
+Zone.Entered:Connect(function(CharacterEntered: Model)
+    print(CharacterEntered.Name .. " has entered the zone.");
+end)
+
+Zone.Exited:Connect(function(CharacterExited: Model)
+    print(CharacterExited.Name .. " has exited the zone.");
+end)
+```
